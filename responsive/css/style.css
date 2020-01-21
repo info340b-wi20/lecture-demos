@@ -1,3 +1,9 @@
+/** DEFAULTS **/
+
+* {
+    box-sizing: border-box;
+}
+
 li {
     display: inline-block;
     border: 1px solid grey;
@@ -16,11 +22,59 @@ li {
 .boxes div { /* flex items */
     border: 1px solid black;
     /* flex-grow: 1; */
-    flex-basis: 100px;
-    margin: 0 1em;
+    flex-basis: 100%;
+    /* margin: 0 1em; */
 }
 
 .boxes div p {
     padding: .25em;
     /* background-color: orange; */
+}
+
+body {
+    background-color: lightblue;
+}
+
+/* if big enough */
+@media (min-width: 768px){
+    body {
+        background-color: purple;
+    }
+
+    .boxes div {
+        background-color: white;
+        flex-basis: 50%;
+    }
+}
+
+/* change the details box */
+p {
+    font-size: 1.5em;
+}
+
+.details {
+    display: none;
+}
+
+@media(min-width: 768px) {
+    p {
+        font-size: 1em;
+    }
+
+    .details {
+        display: block;
+        color: white;
+    }
+}
+
+@media (min-width: 920px) {
+    body {
+        background-color: orange;
+    }
+} 
+
+@media (min-width: 1000px) {
+    .boxes div {
+        flex-basis: 33%;
+    }
 }
