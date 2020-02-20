@@ -6,7 +6,8 @@ import App from './App';
 const SAMPLE_TASKS = [
   {id:1, description:'Learn JSX', complete:true},
   {id:2, description:'Learn about React State', complete:false},
-  {id:3, description:'Get some sleep', complete:false} 
+  {id:3, description:'Get some sleep', complete:false}, 
+  {id:4, description:'Finish 07A', complete:true} 
 ];
 
 //render App, passing it array as prop!
