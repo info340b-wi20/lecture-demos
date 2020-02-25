@@ -9,19 +9,38 @@ class App extends Component {
     }
   }
 
-  toggleComplete = (taskIndex) => {
-    this.setState((currState, currProps) => {
+  toggleComplete = (taskId) => {
+    this.setState((prevState, prevProps) => {
 
-      //fix this tomorow
-      this.state.tasks[taskIndex].complete = !this.state.tasks[taskIndex].complete;
+      let updatedTasks = prevState.tasks.map((eachTask) => {
+        let copy = Object.assign({}, eachTask); //copy the object
+        if(copy.id === taskId)
+          copy.complete = !copy.complete;
+        return copy; //put copy in the mapped list
+      })
 
       let updatedState = {
-        tasks: this.state.tasks //now updated
+        tasks: updatedTasks
       }
       return updatedState;
     })
   }
 
+  addTask = (taskDescription) => {
+    this.setState((prevState, prevProps) => {
+      let copyTasks = prevState.tasks.map((eachTask) => {
+        return Object.assign({}, eachTask); //copy the object
+      })
+
+      let newTask = {
+        id: copyTasks.tasks[copyTasks.tasks.length].id + 1, //add 1 to id
+        description: taskDescription,
+        complete: false
+      }
+      copyTasks.push(newTask);
+      return {tasks: copyTasks};
+    });
+  }
 
   render() {
     let tasks = this.state.tasks; //local name for readability
@@ -32,7 +51,7 @@ class App extends Component {
     return (
       <div className="container">
         <p className="lead">Things I have to do ({incomplete.length})</p>
-        <TaskList taskArray={tasks} howToToggleCallback={this.toggleComplete} />
+        <TaskList taskArray={tasks} />
         <AddTaskForm />
       </div>
     );
@@ -43,7 +62,12 @@ class TaskList extends Component {
   render() {
     //do data processing
     let taskComponents = this.props.taskArray.map((eachTask) => {
-      let singleTask = <Task key={eachTask.id} task={eachTask} />
+      let singleTask = (
+        <Task 
+          key={eachTask.id} 
+          task={eachTask} 
+        />
+      );
       return singleTask;
     })
 
@@ -60,8 +84,7 @@ class Task extends Component {
     super(props);
 
     this.state = {
-      currentComplete: this.props.task.complete,
-      clickCount: 0
+      currentComplete: this.props.task.complete
     };
 
   }
@@ -83,22 +106,20 @@ class Task extends Component {
     //this.props.task.complete = !this.props.task.complete;
 
     //modify state
-
-    // this.setState(  (currState, currProps) => {
-    //   let updatedState = {
-    //     currentComplete: !currState.currentComplete //account for intermediate changes
-    //   }
-    //   return updatedState; //this is what I want to merge in when you have a sec
+    this.setState(  (prevState, prevProps) => {
+      let updatedState = {
+        currentComplete: !prevState.currentComplete, //account for intermediate changes
+      }
+      return updatedState; //this is what I want to merge in when you have a sec
   
-    // })
-    //console.log(this.state.currentComplete);
+    })
   };
 
   render() {
     console.log("rendering", this.props.task.description)
     return (
       <li className={this.getClassName()} onClick={this.doSomething} >
-        {this.props.task.description} ({this.state.clickCount});
+        {this.props.task.description}
       </li>
     );
   }
